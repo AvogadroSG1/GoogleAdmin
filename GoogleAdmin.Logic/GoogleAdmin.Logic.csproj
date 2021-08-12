@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Google.Apis.Gmail.v1" Version="1.52.0.2356" />
+		<PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.54.0.2399" />
+	</ItemGroup> 
+	<ItemGroup>
+	  <ProjectReference Include="..\GoogleAdmin.Models\GoogleAdmin.Models.csproj" />
+	</ItemGroup>
+</Project>
