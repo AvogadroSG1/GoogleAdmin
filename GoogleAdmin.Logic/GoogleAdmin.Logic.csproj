@@ -10,4 +10,9 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\GoogleAdmin.Models\GoogleAdmin.Models.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Update="credentials.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 </Project>
