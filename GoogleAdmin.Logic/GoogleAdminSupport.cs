@@ -35,7 +35,7 @@ namespace GoogleAdmin.Logic
             });
         }
 
-        async Task<List<GoogleUser>> GetUsers()
+        public async Task<List<GoogleUser>> GetUsers()
         { 
             // Define parameters of request.
             UsersResource.ListRequest request = service.Users.List();
