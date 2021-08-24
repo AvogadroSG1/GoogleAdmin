@@ -15,26 +15,37 @@ namespace GoogleAdmin.Logic
 {
     public class GoogleAdminSupport
     {
-        string ApplicationName = "Directory API .NET Quickstart";
+        string ApplicationName = "Hire Police Signatures";
 
-        private UserCredential credential { get; set; }
         private DirectoryService service { get; set; }
         
-        public GoogleAdminSupport(UserCredential credential)
+        public GoogleAdminSupport(GoogleCredential googleCreds)
         {
-            this.credential = credential;
-            this.service = this.CreateDirectoryService();
+            this.service = this.CreateDirectoryService(googleCreds);
         }
 
-        private DirectoryService CreateDirectoryService()
+        public GoogleAdminSupport(UserCredential credential)
+        {
+            this.service = this.CreateDirectoryService(credential);
+        }
+
+        private DirectoryService CreateDirectoryService(GoogleCredential googleCreds)
         {
             return new DirectoryService(new BaseClientService.Initializer()
             {
-                HttpClientInitializer = credential,
+                HttpClientInitializer = googleCreds,
                 ApplicationName = ApplicationName,
             });
         }
 
+        private DirectoryService CreateDirectoryService(UserCredential uc)
+        {
+            return new DirectoryService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = uc,
+                ApplicationName = ApplicationName,
+            });
+        }
         public async Task<List<GoogleUser>> GetUsers()
         { 
             // Define parameters of request.
@@ -64,5 +75,7 @@ namespace GoogleAdmin.Logic
             return orgUsers;
 
         }
+
+
     }
 }

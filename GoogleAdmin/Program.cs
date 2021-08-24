@@ -12,16 +12,13 @@ namespace GoogleAdmin
     {
         static async Task Main(string[] args)
         {
-            GoogleCredentialAuth auth = new GoogleCredentialAuth();
-            UserCredential uc = await auth.GetCredentials();
+            GoogleCredential googleCreds = await GoogleCredentialAuth.GetAdminServiceCredentials();
 
-            GoogleAdminSupport gas = new GoogleAdminSupport(uc);
-
+            GoogleAdminSupport gas = new GoogleAdminSupport(googleCreds);
             List<GoogleUser> users = await gas.GetUsers();
 
-            users = users.Where(u => u.PrimaryEmail.Equals("admin@hirepolice.com")).ToList();
-
             GmailSupport gms = new GmailSupport();
+            await gms.SetSignature(users);
         }
     }
 }

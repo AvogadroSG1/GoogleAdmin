@@ -11,7 +11,7 @@
 	  <ProjectReference Include="..\GoogleAdmin.Models\GoogleAdmin.Models.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="credentials.json">
+	  <None Update="hirepoliceSA.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
