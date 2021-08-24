@@ -6,36 +6,49 @@ using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Util.Store;
+using Google.Apis.Services;
 
 namespace GoogleAdmin.Logic
 {
     public class GoogleCredentialAuth
     {
-        public GoogleCredentialAuth()
-        {
-        }
+        static readonly string[] Scopes = { DirectoryService.Scope.AdminDirectoryUserReadonly, GmailService.Scope.GmailModify, GmailService.Scope.GmailSettingsBasic, GmailService.Scope.GmailCompose, GmailService.Scope.MailGoogleCom };
 
-        string[] Scopes = { DirectoryService.Scope.AdminDirectoryUserReadonly, GmailService.Scope.GmailSettingsBasic, GmailService.Scope.GmailCompose, GmailService.Scope.MailGoogleCom };
-
-        public async Task<UserCredential> GetCredentials()
+        public static async Task<UserCredential> GetCredentials()
         {
             UserCredential credentials;
 
             using (var stream =
                 new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
             {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
                 string credPath = "token.json";
                 credentials = GoogleWebAuthorizationBroker.AuthorizeAsync(
                     (await GoogleClientSecrets.FromStreamAsync(stream)).Secrets,
                     Scopes,
-                    "user",
+                    "jenn@hirepolice.com",
                     CancellationToken.None,
                     new FileDataStore(credPath, true)).Result;
             }
 
             return credentials;
+        }
+
+        public static async Task<GoogleCredential> GetAdminServiceCredentials()
+        {
+            var decodedCreds = await GoogleCredential.FromFileAsync("hirepoliceSA.json", CancellationToken.None);
+            decodedCreds = decodedCreds.CreateScoped(Scopes);
+            decodedCreds = decodedCreds.CreateWithUser("admin@hirepolice.com");
+
+            return decodedCreds;
+        }
+
+        public static async Task<GoogleCredential> GetImpersonationServiceCredentials(string user)
+        {
+            var decodedCreds = await GoogleCredential.FromFileAsync("hirepoliceSA.json", CancellationToken.None);
+            decodedCreds = decodedCreds.CreateScoped(Scopes);
+            decodedCreds = decodedCreds.CreateWithUser(user);
+
+            return decodedCreds;
         }
     }
 }
