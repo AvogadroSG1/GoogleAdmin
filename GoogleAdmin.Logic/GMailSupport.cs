@@ -80,7 +80,7 @@ namespace GoogleAdmin.Logic
             Message test = await response.ExecuteAsync();
         }
 
-        public async Task SetSignature(List<GoogleUser> users)
+        public async Task<List<GoogleUser>> SetSignature(List<GoogleUser> users)
         {
             foreach(GoogleUser user in users)
             {
@@ -90,10 +90,12 @@ namespace GoogleAdmin.Logic
                
                 var signatureResponse = await signatureQuery.ExecuteAsync();
                 SendAs currentSendAs = signatureResponse.SendAs.SingleOrDefault(sa => sa.IsPrimary ?? false);
-                currentSendAs.Signature = string.Format(this.StandardSignature, user.User.Name.FullName, user.User.Organizations[0]?.Title ?? string.Empty);
+                currentSendAs.Signature = string.Format(this.StandardSignature, user.User.Name.FullName, user.User?.Organizations?.ElementAtOrDefault(0)?.Title ?? string.Empty);
                 currentSendAs = await gmailService.Users.Settings.SendAs.Patch(currentSendAs, user.User.Id, currentSendAs.SendAsEmail).ExecuteAsync();
-                Console.WriteLine($"Updated {user.User.Name.FullName} -- {user.User.Organizations[0]?.Title ?? string.Empty}");
+                Console.WriteLine($"Updated {user.User.Name.FullName} -- {user.User?.Organizations?.ElementAtOrDefault(0)?.Title ?? string.Empty}");
             }
+
+            return users;
         }
     }
 
