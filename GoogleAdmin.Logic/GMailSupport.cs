@@ -16,7 +16,7 @@ namespace GoogleAdmin.Logic
 {
     public class GmailSupport
     {
-        private string StandardSignature = "{0}<br>{1}<br><img src=\"https://static.wixstatic.com/media/18b4e2_261e904c68c44a1aa3529b08a2477bfa~mv2.png\" style=\"margin-top:0px\" class=\"CToWUd\" width=\"217.97260273972603\" height=\"87\"><br>After Hours Client Call Center<br>(503) 207-5300 - For use between 8 PM - 8 AM Daily<br><br>410-656-2221 • PA  / 702 N. 3rd Street #40, Philadelphia, PA 19123 <br>410-656-2221 • MD / 8480 Baltimore National Pike #181 Ellicott City, MD 21043<br>202-280-1772 • DC / 100 M St SE #600, Washington, DC 20003<br>757-250-5729 • VA & NC / 780 Lynnhaven Parkway / Suite 400 Virginia Beach, VA 23452<br>305-421-7266 • FL / 2598 E Sunrise Blvd Suite 2104 Fort Lauderdale, FL 33304<br>";
+        private string StandardSignature = "{0}<br>{1}<br><img src=\"https://static.wixstatic.com/media/18b4e2_911c22feb2ec450885872fe5bf45c81b~mv2.png\" style=\"margin-top:0px\" class=\"CToWUd\" width=\"225\" height=\"128.5\"><br>After Hours Client Call Center<br>(503) 207-5300 - For use between 8 PM - 8 AM Daily<br><br>410-656-2221 • PA  / 702 N. 3rd Street #40, Philadelphia, PA 19123 <br>410-656-2221 • MD / 8480 Baltimore National Pike #181 Ellicott City, MD 21043<br>202-280-1772 • DC / 100 M St SE #600, Washington, DC 20003<br>757-250-5729 • VA & NC / 780 Lynnhaven Parkway / Suite 400 Virginia Beach, VA 23452<br>305-421-7266 • FL / 2598 E Sunrise Blvd Suite 2104 Fort Lauderdale, FL 33304<br>";
         private string ApplicationName = "Hire Police Signatures";
         private GmailService gmailService;
         private GoogleMailMessage googleMailMessage;
