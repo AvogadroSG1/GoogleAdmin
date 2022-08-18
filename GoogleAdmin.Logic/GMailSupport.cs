@@ -84,24 +84,24 @@ namespace GoogleAdmin.Logic
         {
             foreach(GoogleUser user in users)
             {
-                gmailService = this.CreateGmailClient(await GoogleCredentialAuth.GetImpersonationServiceCredentials(user.PrimaryEmail));
-                var signatureQuery = gmailService.Users.Settings.SendAs.List(user.User.Id);
+                gmailService = this.CreateGmailClient(GoogleCredentialAuth.GetImpersonationServiceCredentials(user.PrimaryEmail));
+                var signatureQuery = gmailService.Users.Settings.SendAs.List(user!.User!.Id);
                 signatureQuery.Fields = "sendAs(isPrimary,sendAsEmail,signature)";
-               
+              
                 var signatureResponse = await signatureQuery.ExecuteAsync();
-                SendAs currentSendAs = signatureResponse.SendAs.SingleOrDefault(sa => sa.IsPrimary ?? false);
-                currentSendAs.Signature = string.Format(this.StandardSignature, user.User.Name.FullName, user.User.Organizations[0]?.Title ?? string.Empty);
-                currentSendAs = await gmailService.Users.Settings.SendAs.Patch(currentSendAs, user.User.Id, currentSendAs.SendAsEmail).ExecuteAsync();
-                Console.WriteLine($"Updated {user.User.Name.FullName} -- {user.User.Organizations[0]?.Title ?? string.Empty}");
+                SendAs currentSendAs = signatureResponse.SendAs.SingleOrDefault(sa => sa!.IsPrimary ?? false)!;
+                currentSendAs.Signature = string.Format(this.StandardSignature, user.User.Name.FullName, (user.User?.Organizations != null ? user.User?.Organizations[0]?.Title : null) ?? string.Empty);
+                currentSendAs = await gmailService.Users.Settings.SendAs.Patch(currentSendAs, user.User!.Id, currentSendAs.SendAsEmail).ExecuteAsync();
+                Console.WriteLine($"Updated {user.User.Name.FullName} -- {(user.User?.Organizations != null ? user.User.Organizations[0]?.Title : null) ?? string.Empty}");
             }
         }
     }
 
     public class GoogleMailMessage
     {
-        public string EmailAddress { get; set; }
-        public string Subject { get; set; }
-        public string Body { get; set; }
+        public string? EmailAddress { get; set; }
+        public string? Subject { get; set; }
+        public string? Body { get; set; }
 
         public Message GmailMessage
         {

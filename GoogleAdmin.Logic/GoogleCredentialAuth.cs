@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
-using Google.Apis.Util.Store;
-using Google.Apis.Services;
+using static GoogleAdmin.Models.GoogleAdminConstants;
+using System.Collections.Immutable;
+using System.Collections.Generic;
 
 namespace GoogleAdmin.Logic
 {
@@ -14,41 +15,26 @@ namespace GoogleAdmin.Logic
     {
         static readonly string[] Scopes = { DirectoryService.Scope.AdminDirectoryUserReadonly, GmailService.Scope.GmailModify, GmailService.Scope.GmailSettingsBasic, GmailService.Scope.GmailCompose, GmailService.Scope.MailGoogleCom };
 
-        public static async Task<UserCredential> GetCredentials()
-        {
-            UserCredential credentials;
-
-            using (var stream =
-                new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+        private static readonly ImmutableDictionary<Business, (string fileName, string adminUserName)> googleSecurityInfo
+            = new Dictionary<Business, (string fileName, string adminUserName)>
             {
-                string credPath = "token.json";
-                credentials = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    (await GoogleClientSecrets.FromStreamAsync(stream)).Secrets,
-                    Scopes,
-                    "jenn@hirepolice.com",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-            }
+                { Business.HP, ("hirepoliceSA.json", "admin@hirepolice.com") },
+                { Business.AE,  ("armedEnforcementSA.json", "admin@armedenforcement.com") }
+            }.ToImmutableDictionary();
 
-            return credentials;
-        }
+        private static GoogleCredential? CurrentCredentials = null;
+        private static string AdminName = string.Empty;
+        private static string FileName = string.Empty;
 
-        public static async Task<GoogleCredential> GetAdminServiceCredentials()
+        public async static void SetDefaults(Business business)
         {
-            var decodedCreds = await GoogleCredential.FromFileAsync("hirepoliceSA.json", CancellationToken.None);
-            decodedCreds = decodedCreds.CreateScoped(Scopes);
-            decodedCreds = decodedCreds.CreateWithUser("admin@hirepolice.com");
-
-            return decodedCreds;
+            (AdminName, FileName) = googleSecurityInfo[business];
+            
+            var decodedCreds = await GoogleCredential.FromFileAsync(FileName, CancellationToken.None);
+            CurrentCredentials = decodedCreds.CreateScoped(Scopes);
         }
+        public static GoogleCredential GetAdminServiceCredentials() => GetImpersonationServiceCredentials(AdminName);
 
-        public static async Task<GoogleCredential> GetImpersonationServiceCredentials(string user)
-        {
-            var decodedCreds = await GoogleCredential.FromFileAsync("hirepoliceSA.json", CancellationToken.None);
-            decodedCreds = decodedCreds.CreateScoped(Scopes);
-            decodedCreds = decodedCreds.CreateWithUser(user);
-
-            return decodedCreds;
-        }
+        public static GoogleCredential GetImpersonationServiceCredentials(string user) => CurrentCredentials!.CreateWithUser(user);
     }
 }
