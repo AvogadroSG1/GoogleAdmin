@@ -6,19 +6,23 @@ using GoogleAdmin.Logic;
 using GoogleAdmin.Models;
 using static GoogleAdmin.Models.GoogleAdminConstants;
 
-var businessOption = new Option<Business>(name: "--business", description: "Business options: HP or AE");
+var businessOption = new Option<BusinessType>(name: "--business", description: "Business options: HP or AE");
 
 var rootCommand = new RootCommand("Synchronize signatures for HP or AE.");
 rootCommand.AddOption(businessOption);
 
-rootCommand.SetHandler(async (business) =>
+rootCommand.SetHandler(async (selection) =>
 {
-    GoogleCredential googleCreds = GoogleCredentialAuth.GetAdminServiceCredentials();
+    var business = Settings[selection];
+
+    await GoogleCredentialAuth.ReadClientJson(business.jsonFileName);
+    GoogleCredential googleCreds = GoogleCredentialAuth.GetAdminServiceCredentials(business.adminUserName);
 
     GoogleAdminSupport gas = new GoogleAdminSupport(googleCreds);
     List<GoogleUser> users = await gas.GetUsers();
 
-    GmailSupport gms = new GmailSupport();
-    await gms.SetSignature(users);
-});
+    GmailSupport gms = new GmailSupport(business.ApplicationName);
+    await gms.SetSignature(users, business.signature);
+}, businessOption);
 
+await rootCommand.InvokeAsync(args);
