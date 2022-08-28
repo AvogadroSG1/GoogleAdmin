@@ -10,72 +10,38 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using GoogleAdmin.Models;
+using System.Linq;
 
-namespace GoogleAdmin.Logic
+namespace GoogleAdmin.Logic;
+
+public class GoogleAdminSupport
 {
-    public class GoogleAdminSupport
-    {
-        string ApplicationName = "Hire Police Signatures";
+    private readonly DirectoryService service;
 
-        private DirectoryService service { get; set; }
-        
-        public GoogleAdminSupport(GoogleCredential googleCreds)
-        {
-            this.service = this.CreateDirectoryService(googleCreds);
-        }
-
-        public GoogleAdminSupport(UserCredential credential)
-        {
-            this.service = this.CreateDirectoryService(credential);
-        }
-
-        private DirectoryService CreateDirectoryService(GoogleCredential googleCreds)
-        {
-            return new DirectoryService(new BaseClientService.Initializer()
+    public GoogleAdminSupport(ICredential googleCreds, string applicationName) =>
+        service =
+            new DirectoryService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = googleCreds,
-                ApplicationName = ApplicationName,
+                ApplicationName = applicationName,
             });
-        }
 
-        private DirectoryService CreateDirectoryService(UserCredential uc)
-        {
-            return new DirectoryService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = uc,
-                ApplicationName = ApplicationName,
-            });
-        }
-        public async Task<List<GoogleUser>> GetUsers()
-        { 
-            // Define parameters of request.
-            UsersResource.ListRequest request = service.Users.List();
-            request.Customer = "my_customer";
-            request.MaxResults = 50;
-            request.OrderBy = UsersResource.ListRequest.OrderByEnum.Email;
+    public async Task<IEnumerable<GoogleUser>> GetUsers()
+    {
+        // Define parameters of request.
+        UsersResource.ListRequest request = service.Users.List();
+        request.Customer = "my_customer";
+        request.MaxResults = 50;
+        request.OrderBy = UsersResource.ListRequest.OrderByEnum.Email;
 
-            // List users.
-            IList<User> users = (await request.ExecuteAsync()).UsersValue;
+        // List users.
+        IList<User> users = (await request.ExecuteAsync()).UsersValue;
 
-            List<GoogleUser> orgUsers = new List<GoogleUser>(10);
-
-            if (users != null && users.Count > 0)
-            {
-                foreach (var userItem in users)
-                {
-                    orgUsers.Add(
-                        new GoogleUser()
-                        {
-                            User = userItem,
-                            PrimaryEmail = userItem.PrimaryEmail
-                        });
-                }
-            }
-
-            return orgUsers;
-
-        }
-
-
+        return users?.Select(userItem =>
+            new GoogleUser(userItem, userItem.PrimaryEmail, userItem.Organizations?.Any(o => o.CostCenter == "1") ?? false))
+            ?? new List<GoogleUser>();
     }
+
+
 }
+

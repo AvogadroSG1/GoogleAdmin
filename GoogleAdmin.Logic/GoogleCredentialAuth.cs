@@ -12,7 +12,14 @@ namespace GoogleAdmin.Logic
 {
     public static class GoogleCredentialAuth
     {
-        static readonly string[] Scopes = { DirectoryService.Scope.AdminDirectoryUserReadonly, GmailService.Scope.GmailModify, GmailService.Scope.GmailSettingsBasic, GmailService.Scope.GmailCompose, GmailService.Scope.MailGoogleCom };
+        static readonly string[] Scopes =
+        {
+            DirectoryService.Scope.AdminDirectoryUserReadonly,
+            GmailService.Scope.GmailModify,
+            GmailService.Scope.GmailSettingsBasic,
+            GmailService.Scope.GmailCompose,
+            GmailService.Scope.MailGoogleCom
+        };
 
         private static GoogleCredential? CurrentCredentials = null;
 

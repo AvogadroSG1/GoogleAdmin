@@ -18,11 +18,11 @@ rootCommand.SetHandler(async (selection) =>
     await GoogleCredentialAuth.ReadClientJson(business.jsonFileName);
     GoogleCredential googleCreds = GoogleCredentialAuth.GetAdminServiceCredentials(business.adminUserName);
 
-    GoogleAdminSupport gas = new GoogleAdminSupport(googleCreds);
-    List<GoogleUser> users = await gas.GetUsers();
+    GoogleAdminSupport gas = new GoogleAdminSupport(googleCreds, business.ApplicationName);
+    IEnumerable<GoogleUser> users = await gas.GetUsers();
 
     GmailSupport gms = new GmailSupport(business.ApplicationName);
-    await gms.SetSignature(users, business.signature);
+    await gms.SetSignature(users, (business.signature, business.adminSignature));
 }, businessOption);
 
 await rootCommand.InvokeAsync(args);

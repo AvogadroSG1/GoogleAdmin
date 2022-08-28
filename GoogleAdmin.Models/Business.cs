@@ -12,5 +12,5 @@ namespace GoogleAdmin.Models
         AE
     }
 
-    public record Business(string ApplicationName, string jsonFileName, string adminUserName, string signature);
+    public record Business(string ApplicationName, string jsonFileName, string adminUserName, string signature, string adminSignature = "");
 }
