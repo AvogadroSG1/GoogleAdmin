@@ -27,7 +27,7 @@ namespace GoogleAdmin.Logic
 
         public async Task SetSignature(IEnumerable<GoogleUser> users, (string signature, string adminSignature) signatureInfo)
         {
-            foreach (GoogleUser user in users.Where(u => u.PrimaryEmail.Contains("admin")))
+            foreach (GoogleUser user in users)
             {
                 var gmailService = this.CreateGmailClient(GoogleCredentialAuth.GetImpersonationServiceCredentials(user.PrimaryEmail));
                 var signatureQuery = gmailService.Users.Settings.SendAs.List(user!.User!.Id);
@@ -42,7 +42,7 @@ namespace GoogleAdmin.Logic
 
                 currentSendAs = await gmailService.Users.Settings.SendAs.Patch(currentSendAs, user.User!.Id, currentSendAs.SendAsEmail).ExecuteAsync();
 
-                Console.WriteLine($"Updated {user.User.Name.FullName} -- {(user.User?.Organizations != null ? user.User.Organizations[0]?.Title : null) ?? string.Empty}");
+                Console.WriteLine($"Updated {user.User.Name.FullName} -- {(user.User?.Organizations != null ? user.User.Organizations[0]?.Title : null) ?? string.Empty} -- Signature { (user.UseAlternateSignature ? "Admin" : "Primary") }");
             }
         }
 
