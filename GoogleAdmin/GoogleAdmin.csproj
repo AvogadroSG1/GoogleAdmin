@@ -1,15 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <Authors>Peter O'Connor</Authors>
-    <Company>Aria Technologies</Company>
-    <Product>HirePoliceSignatures</Product>
-    <PackageId>HirePoliceSignatures</PackageId>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GoogleAdmin.Logic\GoogleAdmin.Logic.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\GoogleAdmin.Logic\GoogleAdmin.Logic.csproj" />
+		<PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+	</ItemGroup>
 </Project>

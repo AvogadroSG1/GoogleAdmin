@@ -1,22 +1,28 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.CommandLine;
 using Google.Apis.Auth.OAuth2;
 using GoogleAdmin.Logic;
 using GoogleAdmin.Models;
+using static GoogleAdmin.Models.GoogleAdminConstants;
 
-namespace GoogleAdmin
+var businessOption = new Option<BusinessType>(name: "--business", description: "Business options: HP or AE");
+
+var rootCommand = new RootCommand("Synchronize signatures for HP or AE.");
+rootCommand.AddOption(businessOption);
+
+rootCommand.SetHandler(async (selection) =>
 {
-    class Program
-    {
-        static async Task Main(string[] args)
-        {
-            GoogleCredential googleCreds = await GoogleCredentialAuth.GetAdminServiceCredentials();
+    var business = Settings[selection];
 
-            GoogleAdminSupport gas = new GoogleAdminSupport(googleCreds);
-            List<GoogleUser> users = await gas.GetUsers();
+    await GoogleCredentialAuth.ReadClientJson(business.jsonFileName);
+    GoogleCredential googleCreds = GoogleCredentialAuth.GetAdminServiceCredentials(business.adminUserName);
 
-            GmailSupport gms = new GmailSupport();
-            await gms.SetSignature(users);
-        }
-    }
-}
+    GoogleAdminSupport gas = new GoogleAdminSupport(googleCreds, business.ApplicationName);
+    IEnumerable<GoogleUser> users = await gas.GetUsers();
+
+    GmailSupport gms = new GmailSupport(business.ApplicationName);
+    await gms.SetSignature(users, (business.signature, business.adminSignature));
+}, businessOption);
+
+await rootCommand.InvokeAsync(args);

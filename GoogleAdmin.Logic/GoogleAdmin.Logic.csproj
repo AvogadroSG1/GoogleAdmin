@@ -2,17 +2,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Google.Apis.Gmail.v1" Version="1.52.0.2356" />
 		<PackageReference Include="Google.Apis.Admin.Directory.directory_v1" Version="1.54.0.2399" />
-	</ItemGroup> 
-	<ItemGroup>
-	  <ProjectReference Include="..\GoogleAdmin.Models\GoogleAdmin.Models.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Update="hirepoliceSA.json">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<ProjectReference Include="..\GoogleAdmin.Models\GoogleAdmin.Models.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="hirepoliceSA.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="armedEnforcementSA.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>
