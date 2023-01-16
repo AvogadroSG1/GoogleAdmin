@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Immutable;
+using static GoogleAdmin.Models.GoogleAdminConstants;
 
 namespace GoogleAdmin.Models
 {
@@ -12,5 +9,5 @@ namespace GoogleAdmin.Models
         AE
     }
 
-    public record Business(string ApplicationName, string jsonFileName, string adminUserName, string signature, string adminSignature = "");
+    public record Business(string ApplicationName, string JsonFileName, string AdminUserName, ImmutableDictionary<CostCenter, string> SignatureSet = default);
 }
