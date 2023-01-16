@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using GoogleAdmin.Models;
 using System.Linq;
+using static GoogleAdmin.Models.GoogleAdminConstants;
 
 namespace GoogleAdmin.Logic;
 
@@ -38,8 +39,18 @@ public class GoogleAdminSupport
         IList<User> users = (await request.ExecuteAsync()).UsersValue;
 
         return users?.Select(userItem =>
-            new GoogleUser(userItem, userItem.PrimaryEmail, userItem.Organizations?.Any(o => o.CostCenter == "1") ?? false))
-            ?? new List<GoogleUser>();
+        {
+            if (!Enum.TryParse<CostCenter>(userItem
+                .Organizations
+                ?.FirstOrDefault()
+                ?.CostCenter, out var costCenter))
+            {
+                costCenter = CostCenter.HP;
+            }
+
+            return new GoogleUser(userItem, userItem.PrimaryEmail, costCenter);
+        }
+     ) ?? new List<GoogleUser>();
     }
 
 
