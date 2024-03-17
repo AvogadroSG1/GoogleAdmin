@@ -27,7 +27,7 @@ namespace GoogleAdmin.Logic
             });
         }
 
-        public async Task SetSignature(IEnumerable<GoogleUser> users, ImmutableDictionary<CostCenter,string> SignatureSet)
+        public async Task SetSignature(IEnumerable<GoogleUser> users, string Signature)
         {
             foreach (GoogleUser user in users)
             {
@@ -38,14 +38,17 @@ namespace GoogleAdmin.Logic
                 var signatureResponse = await signatureQuery.ExecuteAsync();
                 SendAs currentSendAs = signatureResponse.SendAs.SingleOrDefault(sa => sa!.IsPrimary ?? false)!;
 
-                currentSendAs.Signature = string.Format(
-                    SignatureSet[user.CostCenter], 
-                    user.User.Name.FullName, 
+
+                var newSignature = string.Format(
+                    Signature,
+                    user.User.Name.FullName,
                     (user.User?.Organizations != null ? user.User?.Organizations[0]?.Title : null) ?? string.Empty);
+
+                currentSendAs.Signature = newSignature;
 
                 currentSendAs = await gmailService.Users.Settings.SendAs.Patch(currentSendAs, user.User!.Id, currentSendAs.SendAsEmail).ExecuteAsync();
 
-                Console.WriteLine($"Updated {user.User.Name.FullName} -- {(user.User?.Organizations != null ? user.User.Organizations[0]?.Title : null) ?? string.Empty} -- Signature { user.CostCenter }");
+                Console.WriteLine($"Updated {user.User?.Name.FullName} -- {(user?.User?.Organizations != null ? user.User.Organizations[0]?.Title : null) ?? string.Empty} -- Signature {user?.CostCenter} with  -- \r\n{newSignature}\r\n");
             }
         }
 

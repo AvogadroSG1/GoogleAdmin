@@ -22,7 +22,7 @@ rootCommand.SetHandler(async (selection) =>
     IEnumerable<GoogleUser> users = await gas.GetUsers();
 
     var gms = new GmailSupport(business.ApplicationName);
-    await gms.SetSignature(users, business.SignatureSet);
+    await gms.SetSignature(users, business.Signature);
 
 }, businessOption);
 

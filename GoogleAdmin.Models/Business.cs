@@ -9,5 +9,5 @@ namespace GoogleAdmin.Models
         AE
     }
 
-    public record Business(string ApplicationName, string JsonFileName, string AdminUserName, ImmutableDictionary<CostCenter, string> SignatureSet = default);
+    public record Business(string ApplicationName, string JsonFileName, string AdminUserName, string Signature = default);
 }
