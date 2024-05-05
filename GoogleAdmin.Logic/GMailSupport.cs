@@ -15,8 +15,9 @@ namespace GoogleAdmin.Logic
     public class GmailSupport
     {
         private string ApplicationName;
+        private bool DryRun;
 
-        public GmailSupport(string applicationName) => ApplicationName = applicationName;
+        public GmailSupport(string applicationName, bool dryRun = false) => (ApplicationName, DryRun) = (applicationName, dryRun);
 
         private GmailService CreateGmailClient(ICredential googleCreds)
         {
@@ -46,7 +47,10 @@ namespace GoogleAdmin.Logic
 
                 currentSendAs.Signature = newSignature;
 
-                currentSendAs = await gmailService.Users.Settings.SendAs.Patch(currentSendAs, user.User!.Id, currentSendAs.SendAsEmail).ExecuteAsync();
+                if (!DryRun)
+                {
+                    currentSendAs = await gmailService.Users.Settings.SendAs.Patch(currentSendAs, user.User!.Id, currentSendAs.SendAsEmail).ExecuteAsync();
+                }
 
                 Console.WriteLine($"Updated {user.User?.Name.FullName} -- {(user?.User?.Organizations != null ? user.User.Organizations[0]?.Title : null) ?? string.Empty} -- Signature {user?.CostCenter} with  -- \r\n{newSignature}\r\n");
             }

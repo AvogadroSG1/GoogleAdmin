@@ -20,7 +20,26 @@ public static class GoogleAdminConstants
         },
         {
             CostCenter.AE,
-            "{0}<br>{1}<br><img alt=\"Image of a circle with Armed Enforcement in the middle\" src=\"https://lh3.googleusercontent.com/pw/AL9nZEVGep2LuPo7J1Qz1sIwlrosfYSvNsfuvUa1T3NlkiAljQ1r8mT_W5FM0zs4Vtzpp0YNeXj-lit_xGuv1VBuM_yjYMJeOvGpLGVMMa1Ag1r7sr5nCNVNxxEy2xZAXJUWA9UwpYdIsBHAlmQs6wbeNI4=w305-h288-no?authuser=4\" style=\"margin-top:0px\" class=\"CToWUd\" width=\"75\" height=\"65\"><br>After Hours Client Call Center<br>(503) 207-5300 - For use between 8 PM - 8 AM Daily<br><br><a href=\"http://www.armedenforcement.com/\" hspace=\"streak-track\" rel=\"noopener\" target=\"_blank\" data-saferedirecturl=\"https://www.google.com/url?q=http://www.armedenforcement.com/&amp;source=gmail&amp;ust=1668125337598000&amp;usg=AOvVaw1G2zZTF0Xs0GBM0G5qsqRW\">www.armedenforcement.com</a><br><br> 757-250-5729 • NC / 5960 Fairview Rd. Suite 400 Charlotte, NC 28210<br>305-421-7266 • FL / 2598 E Sunrise Blvd Suite 2104 Fort Lauderdale, FL 33304<br> <br>VA License #11-16037 <br>FL License #B-1800280 <br>NC License #932336-GP / BPN 959090M <br>SC License #3902 <br><br><span style=\"color:rgb(0,0,0);font-family:Arial;font-size:11px;font-style:italic\">Legal Notice: &nbsp;This message is intended for the addressee(s) only and, unless expressly stated otherwise, is confidential and may be privileged.&nbsp; If you are not an addressee, (i) please inform the sender immediately and permanently delete and destroy the original and any copies or printouts of this message, and (ii) be advised that any disclosure, copying or use of the information in this message is unauthorized and may be unlawful.</span> <br>"
+            """
+                {0}<br>
+                {1}<br>
+                <img alt="Image of a circle with Armed Enforcement in the middle"
+                    src="https://lh3.googleusercontent.com/pw/AL9nZEVGep2LuPo7J1Qz1sIwlrosfYSvNsfuvUa1T3NlkiAljQ1r8mT_W5FM0zs4Vtzpp0YNeXj-lit_xGuv1VBuM_yjYMJeOvGpLGVMMa1Ag1r7sr5nCNVNxxEy2xZAXJUWA9UwpYdIsBHAlmQs6wbeNI4=w305-h288-no?authuser=4"
+                    style="margin-top:0px" class="CToWUd" width="75" height="65"><br>
+                <br>
+                <a href="http://www.armedenforcement.com/" hspace="streak-track" rel="noopener" target="_blank"
+                    data-saferedirecturl="https://www.google.com/url?q=http://www.armedenforcement.com/&amp;source=gmail&amp;ust=1668125337598000&amp;usg=AOvVaw1G2zZTF0Xs0GBM0G5qsqRW">www.armedenforcement.com</a><br>
+                <br>
+                Corporate mailing: 8480 Baltimore National Pike #181 Ellicott City, MD 21043<br>
+                757-250-5729 • 780 Lynnhaven Parkway / Suite 400 Virginia Beach, VA 23452<br>
+                VA License #11-16037<br>
+                <br>
+                <span style="color:rgb(0,0,0);font-family:Arial;font-size:11px;font-style:italic">Legal Notice: &nbsp;This message is
+                    intended for the addressee(s) only and, unless expressly stated otherwise, is confidential and may be
+                    privileged.&nbsp; If you are not an addressee, (i) please inform the sender immediately and permanently delete and
+                    destroy the original and any copies or printouts of this message, and (ii) be advised that any disclosure, copying
+                    or use of the information in this message is unauthorized and may be unlawful.</span><br>
+            """
         }
     }.ToImmutableDictionary();
 
